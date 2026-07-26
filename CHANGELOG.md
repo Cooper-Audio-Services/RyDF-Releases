@@ -10,6 +10,26 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.1.2] — 2026-07-26
+
+### Fixed
+- Pinch-to-zoom — and ⌘/Ctrl-scroll zoom — works again. A regression in the
+  recent "keep every tab's viewer mounted" change left the zoom-gesture
+  listeners unattached whenever a viewer first mounted while its tab wasn't the
+  active one; they now attach as soon as the tab becomes active.
+
+### Added
+- Right-clicking an entry in the **Outline** panel now offers the same page
+  operations as the **Pages** panel — rotate, extract, insert PDF, insert blank
+  pages, copy & paste measurement scale, and delete — acting on that entry's
+  page.
+
+### Changed
+- Sidebar page previews are now warmed in the background right after a document
+  opens (into their dedicated thumbnail cache), so scrolling the **Pages** list
+  stays smooth instead of rendering each preview on demand as it scrolls into
+  view.
+
 ## [0.1.1] — 2026-07-25
 
 ### Fixed
