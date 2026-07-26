@@ -10,6 +10,14 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.1.4] — 2026-07-26
+
+### Changed
+- When an update is ready and you have unsaved markups, RyDF now **asks** whether
+  to save them before it quits to finish updating, instead of saving for you
+  automatically. (A session with nothing unsaved still goes straight to the
+  installer.)
+
 ## [0.1.3] — 2026-07-26
 
 ### Changed
