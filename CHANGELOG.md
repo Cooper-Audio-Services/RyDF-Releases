@@ -10,6 +10,14 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.1.3] — 2026-07-26
+
+### Changed
+- When an update finishes downloading and its installer disk image opens, RyDF
+  now saves any unsaved markups and **quits automatically**, so you can drag the
+  new version straight into your Applications folder over the old one without
+  quitting the app yourself first.
+
 ## [0.1.2] — 2026-07-26
 
 ### Fixed
