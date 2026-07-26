@@ -10,6 +10,22 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-07-25
+
+### Fixed
+- Sidebar page previews no longer re-render when you zoom the main view (or
+  during the background render pass). Thumbnails now use a dedicated cache, so
+  they draw once and stay — the visible page renders first, then its previews.
+- The Preferences window now scrolls when its content is tall, so the
+  **Software updates** section is no longer clipped.
+
+### Changed
+- Search runs much faster on large documents: each page's text is indexed once
+  in the background after a document opens, so search skips the expensive text
+  scan on pages that can't contain the query (OCR'd text is included). The index
+  is revision-tagged, so any page edit or OCR invalidates it automatically.
+- The search-result highlight now defaults to **2 pt** on new installs.
+
 ## [0.1.0] — 2026-07-21
 
 ### Added
