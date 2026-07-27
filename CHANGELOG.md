@@ -10,6 +10,37 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.2.1] — 2026-07-26
+
+A follow-up to v0.2.0's performance work, from profiling what the renderer
+actually spends its time on rather than what seemed likely.
+
+### Changed
+- **Drawings appear noticeably faster when you move around.** Profiling showed
+  half of a page's render time went not to drawing the page but to *compressing*
+  the result — so tiles now drop the alpha channel they never used (every tile
+  sits on opaque white) and compress with a faster setting. A fresh screenful of
+  a vector drawing renders **1.6× quicker**; a dense architectural sheet 1.3×.
+  The trade is memory: tiles are roughly 2.4× larger, so the render cache holds
+  proportionally fewer of them. Background pre-rendering now stops once the
+  cache is full rather than endlessly re-rendering and discarding, so a document
+  bigger than your cache setting degrades gracefully instead of pinning a CPU
+  core — raise **Preferences ▸ Render cache** if you work with very large sets.
+- **Opening a document shows the first page much sooner.** RyDF used to hold the
+  “Opening…” screen until five pages *and* five sidebar previews had finished —
+  four of them pages you can't see yet. It now waits for the one page you're
+  about to look at: **280 ms → 148 ms** on a 120-page drawing set, and
+  **225 ms → 61 ms** on a 1,500-page document. Pages further down still show
+  their low-resolution preview the moment you scroll to them.
+- **Zooming out no longer sends the background renderer off on a wild goose
+  chase.** It had been pre-rendering at whatever zoom the document opened at, so
+  after you zoomed out everything it prepared was at the wrong size and thrown
+  away. It now follows the zoom you're actually at — but never *above* the zoom
+  the document opened at, because the number of tiles in a page grows with the
+  square of the zoom, and speculatively pre-rendering a whole drawing set at 4×
+  would cost more than it could ever save. What you're looking at while zoomed
+  in is handled by the foreground renderer, which always takes priority.
+
 ## [0.2.0] — 2026-07-26
 
 A performance release: moving around a large drawing set should now show you
