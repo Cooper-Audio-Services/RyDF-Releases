@@ -10,6 +10,66 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.2.2] — 2026-07-29
+
+### Added
+- **Recognising text now runs in the background.** OCR used to hold a dialog
+  open for the whole run, which on a scanned drawing set meant watching a
+  progress bar for minutes. It now works away while you keep reading, scrolling
+  and marking up; progress and a **Stop** appear in the status bar at the bottom
+  of the window. Stopping finishes the page it is on and keeps everything
+  recognised so far, and you get a summary at the end. One job runs at a time —
+  two at once would only make both slower.
+
+### Fixed
+- **Pinch-to-zoom is much smoother, and reaches further.** Two separate problems.
+  macOS hands the app the trackpad's magnification only about 40–60 times a
+  second, in jumps of 6–8% — far coarser than the display refreshes — so the
+  drawing sat still and then lurched. It now eases between those updates instead
+  of waiting for them, so the motion is spread across every frame. Separately,
+  the raw trackpad magnification is conservative: at 300% a full finger-spread
+  barely moved you. The gesture now travels further the further in you already
+  are, ramping up to about twice the reach at maximum zoom, while staying 1:1 at
+  100% and below where precision matters more.
+- **“Open With ▸ RyDF” always opens the file.** It sometimes just launched the
+  app and sat there. A file handed over during a cold launch could arrive in the
+  moment between RyDF checking for one and being ready to be told about one, and
+  was then dropped.
+- **Zooming in past a re-render threshold no longer leaves broken image boxes.**
+  A whole screen of tiles could be requested a fraction before the renderer was
+  told the new zoom level, and it rejected every one of them. A tile that fails
+  outright now leaves its low-resolution preview showing rather than a broken
+  image.
+- `npm run tauri dev` works again for anyone building from source; it aborted
+  before opening a window.
+
+### Changed
+- **Tabs are sized to the drawing's name.** They used to be locked between two
+  fixed widths, so a short name sat in a half-empty tab while a real sheet name
+  — *2222-0102 - Damrosch Park Renovation - Issue A* — was cut off at a boundary
+  that had nothing to do with the name. Each tab now takes exactly the room its
+  title needs, up to a generous limit so one very long name can't push the rest
+  off screen. The full path is still there on hover.
+- **The tab strip scrolls with arrow buttons instead of a scrollbar.** Chevrons
+  appear at either end only once the tabs stop fitting, and each greys out when
+  there's nothing further that way. **+** stays put no matter how many documents
+  are open, and switching to a tab that's scrolled out of sight brings it back.
+  There is no limit on how many documents you can have open — there never was;
+  the old fixed widths simply made it look like there was.
+- **Another step faster when moving around a drawing.** Compressing a tile no
+  longer happens on the same thread that draws it, so those two now overlap
+  instead of queueing: a fresh screenful of a vector drawing arrives about 1.4×
+  quicker, a dense architectural sheet about 1.25×.
+- **The sidebar preview cache follows the Render cache setting.** It was a fixed
+  size, which quietly became a smaller cache in real terms when tiles grew in
+  v0.2.1 — with nothing you could turn up. Raising **Preferences ▸ Render
+  cache** now buys more page previews as well as more page tiles.
+- **Zooming out restarts background pre-rendering.** v0.2.1 stopped a zoom *in*
+  from sending the background pass off after work nobody needed; the side effect
+  was that zooming back out left it preparing pages at a resolution higher than
+  anyone wanted, with no way to recover. It now re-aims itself when you settle
+  at a lower zoom.
+
 ## [0.2.1] — 2026-07-26
 
 A follow-up to v0.2.0's performance work, from profiling what the renderer
