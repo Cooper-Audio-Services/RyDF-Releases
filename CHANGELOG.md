@@ -10,6 +10,22 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-07-31
+
+### Added
+- **The search box remembers what you've searched for.** Click into it and the
+  queries you've already run on this drawing drop down underneath — five at a
+  time, scroll for the rest. Click one, or walk the list with ↑/↓ and press
+  Enter, to run it again. Only searches you actually *used* are kept, so the
+  list holds whole queries rather than every half-typed fragment on the way to
+  one, and re-running an old term floats it back to the top instead of
+  appearing twice. Each tab keeps its own list for as long as that file is
+  open: rotating, deleting or inserting pages and running OCR all leave it
+  alone, and opening a different file into the tab starts a fresh one. While
+  the list is down, ↑/↓ and Enter drive it; with it closed they step through
+  search results exactly as before, and Esc closes the list before it clears
+  the box.
+
 ## [0.2.3] — 2026-07-31
 
 ### Fixed
