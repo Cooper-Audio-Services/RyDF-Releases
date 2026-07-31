@@ -10,6 +10,23 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.2.3] — 2026-07-31
+
+### Fixed
+- **Clicking a search result now centres the view on it.** It used to take you
+  to the right page and leave you hunting. The jump put the match a hair below
+  the top edge — that gap was measured in page points, so the more you were
+  zoomed in the smaller it got — and it never adjusted the sideways scroll at
+  all, so on a wide sheet the match could sit off past the edge of the window
+  with the view exactly where you left it. The match now lands in the middle of
+  the window, both directions.
+- **Pinch-to-zoom sharpens the moment you lift your fingers.** The re-sharpen
+  added in 0.2.2 was reading the zoom level from just before the gesture's last
+  frame, so it often decided nothing had changed and did nothing; the drawing
+  then stayed soft for another fraction of a second until a follow-up pass
+  caught it. The same stale reading also threw off the start of the *next*
+  pinch by a small amount.
+
 ## [0.2.2] — 2026-07-29
 
 ### Added
