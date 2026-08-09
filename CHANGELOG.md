@@ -10,6 +10,19 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.3.2] — 2026-08-09
+
+### Changed
+- **A page looks far less fuzzy while a big sheet is still rendering.** Opening or
+  scrolling to a large sheet shows a quick stand-in image until the sharp,
+  full-resolution tiles finish rendering. That stand-in was the small sidebar
+  thumbnail stretched across the whole page — on an E-size drawing that's about
+  a tenfold enlargement, so it read as a blurry mush for the second or two the
+  real render took. The stand-in is now drawn at about two-and-a-half times the
+  resolution, so it's legible enough to start reading from immediately, and the
+  sidebar page thumbnails are a touch crisper too. The final, fully sharp render
+  is unchanged and arrives just as fast.
+
 ## [0.3.1] — 2026-08-09
 
 ### Fixed
