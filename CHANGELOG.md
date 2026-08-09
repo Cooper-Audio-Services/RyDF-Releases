@@ -10,6 +10,17 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-08-09
+
+### Added
+- **The Print window remembers your printer.** Whichever printer (or “Save as
+  PDF”) you last printed to is selected again the next time you open Print,
+  instead of always resetting to the system default. If that printer isn't
+  connected any more, it quietly falls back to the default.
+- **The paper-size list is searchable.** Large-format plotters report dozens of
+  sizes; the picker now opens with a search box — type a name (“arch e”) or a
+  dimension (“34”) to filter, and use ↑/↓ and Enter to pick without the mouse.
+
 ## [0.3.2] — 2026-08-09
 
 ### Changed
