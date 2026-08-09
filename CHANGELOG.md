@@ -10,6 +10,24 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.3.1] — 2026-08-09
+
+### Fixed
+- **The print preview shows the page again.** On a large sheet the preview
+  turned into a broken-image box with a “?”. The preview renders the page at
+  its own fit-to-paper scale, which had nothing to do with the main view's
+  zoom, and the renderer was rejecting it as a stale scale — the same reason
+  applied to the Organize Pages thumbnails. Surfaces that render the document
+  outside the main viewport are now exempt from that check.
+- **A drawing bigger than the paper scales down to fit again.** Printing an
+  oversized sheet — an ASME E drawing onto Tabloid, say — with the Vector
+  method and “Fit to printable area” printed a cropped corner at full size
+  instead of shrinking the sheet onto the page. The Vector method hands the PDF
+  straight to the printer, which won't scale an outsized page down, so a sheet
+  meaningfully larger than the paper now renders through the same path the
+  Raster method uses, which places it precisely. Ordinary same-size prints are
+  untouched and keep their original vector quality.
+
 ## [0.3.0] — 2026-07-31
 
 ### Added
