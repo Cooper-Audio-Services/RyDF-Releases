@@ -10,6 +10,17 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.4.1] — 2026-08-09
+
+### Fixed
+- **Copying selected text works again.** With the Select-text tool, dragging
+  over text and choosing Copy — or pressing ⌘C — now actually puts the text on
+  the clipboard. Two things were wrong: the copy went through a browser API the
+  app's webview doesn't reliably expose (so it silently did nothing), and ⌘C had
+  no handler at all, because the selection is the app's own highlight rather than
+  a normal text selection the system knows about. Copying now uses a path that
+  works in the webview, and ⌘C copies whatever text is currently selected.
+
 ## [0.4.0] — 2026-08-09
 
 ### Added
