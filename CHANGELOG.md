@@ -10,6 +10,28 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-08-13
+
+### Added
+- **RyDF notices when a drawing is re-saved by another program.** If a PDF
+  you have open is changed on disk — re-exported from your CAD app, updated in
+  a synced folder — a prompt offers to reload it to the latest version. If you
+  have unsaved markups, it warns that reloading discards them and lets you
+  **Save a Copy** first to keep your work, **Discard & Reload**, or **Keep
+  working** with the version you have. RyDF's own saves never trigger it, and
+  each open tab is watched independently.
+
+### Fixed
+- **Search highlights and text selection land on the right words again.** On
+  some PDFs — ones exported with the page origin shifted off (0,0), like certain
+  price sheets — every search highlight and text-selection box sat about a
+  word to the left of the text it belonged to, and dragging to copy grabbed the
+  wrong words. RyDF was reading text positions in the page's own coordinate
+  space but drawing them in the cropped display space without accounting for
+  the offset between the two. The same shift also nudged snapped measurements,
+  the OCR text layer, and native annotations written into an exported copy —
+  all now corrected. Ordinary PDFs (origin at 0,0) are unaffected.
+
 ## [0.4.1] — 2026-08-09
 
 ### Fixed
