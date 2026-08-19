@@ -10,6 +10,27 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.5.1] — 2026-08-17
+
+### Fixed
+- **Documents that mix page sizes no longer freeze when you scroll between
+  them.** On a set with, say, 8.5×11 spec sheets and 34×22 plots, scrolling
+  from one size to another could snap the view back and leave the large sheets
+  unreachable — the window looked like it had frozen or gone blank. Fit width
+  still fits whichever page you're looking at, as it should, so a wide plot
+  sizes itself to the window as you reach it; what was broken was the re-fit
+  itself. Zooming out to fit a wide page shrinks the document, and the scroll
+  position was being clamped to the shorter document *before* the view had been
+  re-anchored — so the app re-anchored to the wrong place, landed back on the
+  previous page, refit again, and the two zooms fought each other. The re-fit
+  now anchors from where you actually were, so it settles immediately on the
+  page you scrolled to.
+- **A mixed-size document opens centred.** Pages are laid out centred in a
+  canvas as wide as the widest page, so a narrow page used to sit off to the
+  side — invisible until you scrolled sideways to find it. The view now centres
+  on open and stays centred as you scroll between sizes, until you deliberately
+  pan sideways.
+
 ## [0.5.0] — 2026-08-13
 
 ### Added
