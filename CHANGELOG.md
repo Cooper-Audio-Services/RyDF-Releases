@@ -10,6 +10,53 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-08-24
+
+### Added
+- **Undo now covers page edits, not just markups.** ⌘Z takes back a page
+  deletion — the pages come back exactly as they were, not a re-imported
+  approximation — and the same goes for rotating, moving, inserting pages and
+  running Recognize Text. Markup edits and page edits share one timeline, so ⌘Z
+  always undoes whatever you did last, whichever kind it was, and ⇧⌘Z redoes it.
+  A short note tells you what was undone (“Undid Delete 2 pages”).
+  Undo is per tab and covers anything that would change the file if you saved
+  right now; it deliberately leaves alone what you're merely *looking* at —
+  zoom, scrolling, selection, the tool you have picked. **⌘Z never touches the
+  disk: it does not un-save a file you already exported or saved a copy of.**
+  Password-protected documents keep markup undo but get no page-edit history,
+  because that would mean writing an unprotected copy of the file to disk.
+- **Tabs can be dragged to reorder them.** Pick a tab up and the others part
+  around it; drop it wherever you want it. Grabbing a tab brings its drawing
+  forward, as in a browser, and a plain click still just switches to it. With
+  more tabs open than fit the strip, holding one against either end scrolls the
+  strip along so you can drop it somewhere currently out of view.
+
+### Fixed
+- **Text is properly sharp again.** Pages were being rendered at a slightly
+  higher resolution than the screen actually needed and then scaled back down
+  to fit — and a downscale of a few percent is the worst kind, enough to soften
+  every letter without looking obviously wrong. It was most visible on a dense
+  price list or schedule next to the same page in Acrobat. Once you settle on a
+  zoom, the page is now rendered at exactly the screen's resolution, so one
+  rendered pixel lands on one screen pixel and text is as crisp as the display
+  allows. Zooming itself is unchanged — the page still scales smoothly under
+  your fingers and sharpens the moment you stop.
+- **Search finds text on large-format sheets again.** On drawing sets whose
+  sheets are exported with the page origin at the centre rather than the corner
+  — common for CAD plots — searching for text you could plainly see (and even
+  copy) returned “No results”. The background index that decides which pages are
+  worth searching was reading each page through a window anchored at the corner,
+  so on those sheets it only ever saw a quarter of the page and skipped the rest.
+  Nothing was wrong with the pages or your query.
+- **Reloading a file changed on disk no longer sits on “Opening…”.** Choosing
+  **Reload** loaded the new version immediately but left the opening overlay up
+  for a further fifteen seconds before revealing it. The viewer signals “this
+  page is on screen” once per document, and it recognised a new document by its
+  revision number — but a freshly reopened file always starts at revision zero,
+  the same as the one it replaced, so the signal never fired and the overlay
+  waited for its own timeout. It now clears as soon as the page is actually
+  drawn, about a second.
+
 ## [0.5.1] — 2026-08-17
 
 ### Fixed
