@@ -8,7 +8,103 @@ The in-app updater reads this file — at each release tag — to show the user
 exactly what changed between the version they have and the one on offer, so keep
 the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
-## [Unreleased]
+## [0.7.0] — 2026-08-23
+
+### Added
+- **Saved files now show their markups in every PDF viewer.** ⌘S used to write
+  a record only RyDF could read, so a drawing you marked up and emailed arrived
+  looking blank in Preview, Acrobat and Bluebeam — Save a Copy was the only way
+  to send markups. Saving now writes both: real PDF annotations for everyone
+  else, and RyDF's own exact record for itself. Reopening still gives you one
+  editable markup per markup, and saving again replaces what it wrote instead
+  of stacking a new copy on top each time. Annotations somebody else added in
+  Acrobat are left alone. Lines, arrows and polylines carry across too — they
+  used to be dropped, so an arrow pointing at the thing you were commenting on
+  simply wasn't there for whoever you sent it to.
+- **Layers.** A drawing set that arrives with its producer's layers — Balloons,
+  Dimensions, Titleblock, Revision Tables — now shows them in a **Layers** tab
+  in the sidebar, with a switch for each. Turn off the balloons and dimensions
+  to get a clean sheet to redline, then turn them back on. Nothing is changed
+  in your file: layer visibility is a view setting, like zoom, and is not saved
+  back or added to undo. Documents without layers say so.
+- **A filled form now reads as filled everywhere.** Values typed into a PDF's
+  form fields are written into the document's own fields on save, with the
+  appearance the field needs to draw them — so a W-9 you fill in here opens
+  filled in Preview, Acrobat, and anything that reads form data. Tick boxes use
+  the state name the form itself defines rather than a guess, and ticking one
+  radio button clears its group.
+- **Filling in forms.** RyDF used to display every interactive form as blank —
+  a filled-in W-9 opened empty, and printed empty, with nothing to say the
+  values were there. Fields and their values now show, and you can click one
+  and type, or tick a box. What you type is kept alongside your markups rather
+  than written into the PDF's own fields, and it prints as it looks.
+- **Drawings that state their own scale now use it.** If a sheet carries a
+  measurement scale in the file, RyDF reads it and the status bar says so —
+  *Scale (p.1, from the drawing): 1 mm = 0.71 pt* — with no calibrating. Your
+  own calibration always wins: set one and it replaces the drawing's for that
+  page, permanently. Measuring against a scale that came from the drawing
+  records it on the document at that moment, so the dimension prints the same
+  number it shows.
+  Where the drawing states a scale but not which unit it means — which is the
+  common case, and reads identically as 1:5 in millimetres or 1:50 in
+  centimetres — RyDF offers the reading rather than applying it, because those
+  two differ by ten times in every dimension taken from the sheet.
+- **Links in the page now work.** Clicking an entry in a PDF's table of contents
+  jumps to that page, as do cross references elsewhere in a document; links to a
+  web address or an email open in your browser or mail app. RyDF read a
+  document's outline but ignored the links drawn on the page itself, so a
+  proposal or spec whose contents page is built from links — the common case,
+  since those documents often have no outline at all — had dozens of dead
+  entries. Hovering a link highlights it and shows where it goes; drawing over
+  one still draws.
+- **Page numbers the document itself prints.** A drawing set that numbers its
+  sheets "FP-111.00" — or a report with roman-numeral front matter — now shows
+  those numbers under the page thumbnails and beside the page box, instead of
+  only RyDF's own 1..N position. You can type a sheet number into the page box
+  to jump straight to it; a partial number like `FP-111` is enough.
+
+### Fixed
+- **"Check for Updates" now names the version you're on** — *RyDF 0.7.0 is the
+  current version* rather than just telling you there's nothing newer.
+- **No more `.markups.json` files next to your drawings.** Autosave used to
+  write its crash-recovery copy beside the document, so marking up anything in
+  a synced folder scattered stray JSON files through it — files you never asked
+  for, that sync and get shared along with the drawing. The recovery copy now
+  lives in RyDF's own Application Support folder and nothing is written next to
+  your documents at all; markups go in the PDF, where an explicit save puts
+  them. Old stray files are still read when you open a drawing, so nothing is
+  lost, and saving that drawing clears them away.
+- **Saving over the file you already have open no longer destroys it.** Save a
+  Copy, Export Flattened and Extract Pages all wrote straight to the chosen
+  path — and because RyDF keeps reading the open document from disk as you
+  work, choosing the open file as the destination overwrote the pages out from
+  under it mid-write. On a 1.7 MB proposal this left a 76 KB file with 2 of its
+  29 images and 5 of its 15 fonts, and it still opened, so nothing said
+  anything was wrong. Every save now writes alongside the destination and moves
+  it into place in one step, which also means an interrupted save (a crash, a
+  full disk) can no longer leave a half-written file where your document was.
+- **Switching tabs while a document opens no longer loses its markups.** The
+  rest of the open — loading the markups, recording the file's fingerprint for
+  the external-change watcher — followed whichever tab was in front by the time
+  it ran, so moving to another tab mid-open left the new document with no
+  markups at all and nothing said so. Saving after that would then write the
+  emptied set back over the file's real markups.
+- **Markups drawn while a save is running are no longer treated as saved.** A
+  save wrote the document as it stood when it started, but cleared the unsaved
+  marker when it finished — so anything drawn in between was left unwritten
+  with nothing indicating it. Quitting then closed without asking. The window
+  is as long as the write takes, which on a Dropbox or network folder is not
+  brief.
+- **Page operations follow the tab they were started from.** Rotating, deleting,
+  moving or inserting pages and then switching tabs before it finished applied
+  the result to the tab you moved to, and filed the undo step there as well.
+- **↑/↓ keep stepping through search results after you click one.** They worked
+  while the cursor was still in the search box, but clicking a result moved the
+  keyboard focus onto that row, and from then on the arrows just scrolled the
+  results list instead of moving between matches. Clicking a result no longer
+  takes focus off the search box, and ↑/↓ now step through matches from anywhere
+  in the Search panel. Arrow keys still scroll the page as usual when you're
+  working in the document itself.
 
 ## [0.6.0] — 2026-08-24
 
