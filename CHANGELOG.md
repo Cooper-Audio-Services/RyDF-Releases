@@ -8,6 +8,31 @@ The in-app updater reads this file — at each release tag — to show the user
 exactly what changed between the version they have and the one on offer, so keep
 the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
+## [0.7.1] — 2026-08-24
+
+### Added
+- **A print queue in the toolbar.** A job RyDF sends goes into the same queue as
+  any other app's, but macOS only raises its printer window for jobs sent the
+  Cocoa way — so a print from RyDF had no window attached to it, and once the
+  progress bar said "sent" there was no way to stop a long drawing set from
+  anywhere. There's now a queue button beside Print, showing what's waiting
+  across every printer. Open it to see each printer's jobs and cancel one job,
+  everything on one printer, or everything at once. It appears only when
+  something is queued.
+
+### Changed
+- **Print closes the dialog immediately.** Progress lives in the queue now, so
+  there's nothing to wait around for.
+
+### Fixed
+- **Content prints centred on a larger sheet.** Printing at actual size on paper
+  bigger than the drawing put it in the bottom-left corner, because the sheet
+  placement was left to the printing system, which anchors an undersized page at
+  the corner. Save as PDF is unchanged.
+- **The paper size starts at the size the drawing is actually drawn at**, when
+  the printer can load it — rather than always starting at the printer's
+  default and needing to be corrected.
+
 ## [0.7.0] — 2026-08-23
 
 ### Added
