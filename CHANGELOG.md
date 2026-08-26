@@ -8,6 +8,49 @@ The in-app updater reads this file — at each release tag — to show the user
 exactly what changed between the version they have and the one on offer, so keep
 the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
+## [0.8.0] — 2026-08-25
+
+### Added
+- **OCR reads rotated text.** Title-block labels and vertical dimension strings
+  were being missed almost every time — the recognizer only reads text running
+  left-to-right in the image it is given, and nothing was turning the page
+  round. RyDF now reads each page all three ways. On a test sheet carrying six
+  vertical labels, it found one of them before and all six now. There's a
+  **Read rotated text** checkbox in the OCR dialog, on by default; turning it
+  off is roughly twice as fast and right for a page of ordinary prose.
+- **Clear marks from selected text.** Select text that already carries a
+  highlight, underline or strikeout and the bar offers a **Clear** button that
+  removes them, so changing your mind no longer means hunting for the mark with
+  the select tool and deleting it by hand. It appears only when there is
+  something to remove, the text stays selected so you can mark it a different
+  way straight away, and it leaves anything drawn over the top — notes, clouds,
+  arrows — alone.
+
+### Changed
+- **OCR reads large sheets in tiles, and finds the fine print.** Recognition
+  works at a fixed internal resolution, so on a big drawing the small type came
+  out below what it could read at all — and rendering the page at a higher
+  resolution did not help, because the whole sheet was still being scaled back
+  down. On 4-5pt dimension text on an A1 sheet, RyDF used to recover about one
+  label in twenty; it now recovers nineteen. Letter and A4 pages are read whole
+  as before and are no slower.
+- **OCR no longer locks the window up while it works.** It used to recognize a
+  whole page as one indivisible piece of work, which on a drawing was several
+  seconds during which nothing else could render and Stop did nothing. It now
+  works in small pieces, so the page keeps drawing and Stop takes effect in a
+  fraction of a second.
+
+### Fixed
+- **The Highlight / Underline / Strikeout / Copy bar appears in full.** Selecting
+  text at any zoom above 100% showed a clipped sliver of it — at 274% zoom, just
+  the word "Highl" — and its buttons would not have worked once visible.
+- **OCR text sits at the angle the text does.** A recognized line was previously
+  laid down flat across its own bounding box, so on the rare occasions a rotated
+  label was found, selecting it highlighted the wrong part of the page.
+- **A failure to start OCR is reported instead of swallowed.** On a build
+  without text recognition, RyDF used to work through every page rasterizing it
+  at 200 DPI on the way to failing on each one, and say nothing.
+
 ## [0.7.1] — 2026-08-24
 
 ### Added
