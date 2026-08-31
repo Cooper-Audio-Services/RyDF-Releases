@@ -8,6 +8,19 @@ The in-app updater reads this file — at each release tag — to show the user
 exactly what changed between the version they have and the one on offer, so keep
 the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
+## [0.8.1] — 2026-08-31
+
+### Added
+- **Search says when a result can't be seen.** Some PDFs carry text nothing
+  paints — a page whose layout was replaced by a flattened image, with the
+  original text left underneath. Search finds those words, because they really
+  are in the file, and used to put a highlight over whatever artwork covers
+  them, which reads as though the highlight were pointing at that artwork.
+  Results like this now carry a **Not visible** tag, and their highlight on the
+  page is drawn as a dashed outline rather than a solid block. Nothing changes
+  for an ordinary document: across two very different test files and 430
+  matches, not one was tagged.
+
 ## [0.8.0] — 2026-08-25
 
 ### Added
