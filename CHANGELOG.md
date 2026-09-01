@@ -8,6 +8,14 @@ The in-app updater reads this file — at each release tag — to show the user
 exactly what changed between the version they have and the one on offer, so keep
 the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
+## [0.8.2] — 2026-08-31
+
+### Fixed
+- **Opening a PDF from Finder brings RyDF back from the Dock.** Double-clicking
+  a file while the app was minimized loaded the document into a window that
+  stayed minimized, so the double-click looked like it had done nothing. The
+  window now comes forward.
+
 ## [0.8.1] — 2026-08-31
 
 ### Added
