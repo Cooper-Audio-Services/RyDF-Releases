@@ -8,6 +8,80 @@ The in-app updater reads this file — at each release tag — to show the user
 exactly what changed between the version they have and the one on offer, so keep
 the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
+## [Unreleased]
+
+## [0.9.0] — 2026-09-05
+
+### Added
+- **Pictures open like documents.** JPEG, PNG, TIFF, WebP and SVG open on every
+  platform; HEIC, GIF and BMP open on macOS. A picture becomes a one-page PDF
+  internally, so tiles, markup, measuring, search, OCR, crop and printing all
+  work on it with no second code path. A JPEG's bytes go in **verbatim** — the
+  wrapper is 1.01x the photo, where re-encoding it would be 7.5x.
+- **SVG opens as true vector**, not a raster. It is converted to PDF page
+  content, so the drawing stays sharp at any zoom and its text stays selectable
+  and searchable. `.svgz` works too.
+- **Saving a picture asks what you meant.** Convert to a PDF and carry on there
+  with your markups still editable, or render them into a new picture. Neither
+  branch touches the original file.
+- **Export any page as an image** — JPEG, PNG, TIFF or WebP. TIFF is written
+  Deflate-compressed (an A1 sheet at 300dpi is 64.5MB, against 209MB
+  uncompressed) and records its resolution, which matters for print. WebP is
+  lossless.
+- **Export any page as SVG.** Vector where that is provably faithful, and where
+  it is not — gradients, blend modes, soft masks — that part is rendered and
+  embedded at exactly its own place in the stacking order, with the export
+  reporting which happened. A test CAD sheet exports as 644 objects, all vector,
+  86KB, curves preserved as true Béziers. Markups become real SVG, and links
+  become real `<a href>` — which no other export in RyDF preserves. There is a
+  strict mode that refuses rather than falling back, for when you need a
+  guarantee of pure vector.
+- **Crop**, for PDF pages and pictures alike, through one implementation.
+  Non-destructive: it moves a boundary rather than discarding anything, reset
+  restores the page exactly, and undo covers it.
+- **Transparent pictures show their transparency**, over a checkerboard rather
+  than composited onto white — which used to make white artwork invisible. The
+  backdrop colour, pattern and check size are configurable in Preferences.
+
+### Fixed
+- **Saving a marked-up document could destroy a non-PDF file.** The guard that
+  refuses to write PDF bytes over something that is not a PDF sat on only one of
+  the two save paths, and not the one a document with markups takes — so RyDF
+  refused to overwrite your photograph only while there was nothing to write,
+  and did it as soon as there was. Save & Quit hit the same path for any open
+  picture. Exporting SVG could destroy a PDF the same way, and now cannot.
+- **Cropping is on the undo timeline.** It was not, so Cmd+Z undid the step
+  before it while the page stayed cropped, and markups were left displaced.
+- **Reset crop put markups back in the wrong place**, measuring from the page
+  box's bottom while display space is anchored to its top — and on the wrong
+  axis for a rotated page.
+- **"Native" image export was 72dpi**, so a 300dpi scan was exported at 24% of
+  its pixels, through both saving and exporting.
+- **Printing a cropped page printed what you had cropped away**, because the
+  vector print path removed the crop box.
+- **Photo orientation was ignored** for every format the macOS backend reads, so
+  a portrait iPhone photo opened on its side. Measured: `sips` neither reports
+  nor applies EXIF orientation, contrary to the assumption in the code.
+- **A JPEG's resolution is read from EXIF** when it carries no JFIF header, so a
+  scan no longer opens four times its true size.
+- **The comment popup** no longer grows as you zoom out, run off the screen, or
+  stay on screen after the note is deleted — three symptoms of it being an SVG
+  `foreignObject` counter-scaled by the zoom.
+- Crop no longer takes the **R** shortcut from Rectangle, draws a preview while
+  you drag, and ignores a stray click instead of showing a raw error.
+
+### Changed
+- **The OCR dialog asks how hard to work, instead of asking about rotation.**
+  Two knobs that traded the same thing — how finely a big sheet is cut up, and
+  whether it is read turned each way — are now one choice. **Most accurate**
+  (the default) reads large sheets in finer pieces and looks at each one every
+  way round; **Fast** does one upright pass. On a test A1 scan carrying 155
+  labels, accurate found 153 and fast found 77, at about four times the time.
+  The **Read rotated text** checkbox is gone, since it was half of this choice.
+- **Most accurate reads more of a drawing than any previous version.** The
+  finer tiling is new: what shipped through 0.8.2 found 129 of those same 155
+  labels, and 117 of the 140 set at 4pt, against 139 now.
+
 ## [0.8.2] — 2026-08-31
 
 ### Fixed
