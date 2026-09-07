@@ -10,6 +10,60 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-09-07
+
+### Added
+- **RyDF runs on Windows.** Every release now ships a Windows installer beside
+  the macOS one. Printing goes through a printer device context, so a Windows
+  print is real vector output at driver resolution rather than a rasterised
+  fallback; and text recognition uses Windows' own OCR (it needs a recognition
+  language installed under Settings → Time & language). Opening a file by
+  double-clicking it in Explorer works — Windows passes the path differently
+  from macOS and nothing had read it.
+- **RyDF can offer to become your default PDF viewer**, once on launch and any
+  time afterwards from Preferences. The launch offer takes **Yes**, **No** or
+  **Ask Me Later**; "No" means never again. On macOS "Yes" simply does it. On
+  Windows no application is allowed to claim a file type for itself, so "Yes"
+  opens the Settings page where you can — and the wording says so rather than
+  claiming a change that did not happen.
+
+### Fixed
+- **A pinch-zoom no longer flashes a grid of broken-image "?" boxes over the
+  page.** The worker rejects any tile whose scale no longer matches the
+  viewport hint, and a pinch crosses scale rungs constantly; each rejection is
+  an HTTP 500, which the webview paints as its broken-image glyph and border —
+  laid over the perfectly good coarse underlay and previous-scale tiles
+  beneath. Tiles are now invisible until they have actually decoded, so a
+  rejected one paints nothing at all while the retry that recovers it runs.
+- **GIF and BMP now open on every platform**, not just macOS. The same build
+  used to accept a .bmp on one platform and refuse it on another.
+- **A missing PDFium no longer leaves a running app with a dead engine.** The
+  failure killed only the engine thread, so the window opened and every
+  document died silently against it.
+- **The updater now downloads the right file, to the right place, on Windows.**
+  It saved the NSIS installer with a `.dmg` extension into `%TEMP%` — a file
+  Windows has no handler for, in a folder the dialog did not name — because the
+  destination path was written for macOS only. It also told Windows users to
+  drag RyDF into their Applications folder.
+- **Windows print dialog preselects your actual default printer** instead of
+  whatever the spooler happened to list first, which was typically Fax or
+  Microsoft Print to PDF.
+
+### Known limitations on Windows
+- The installer is **not code-signed**, so SmartScreen shows "Windows protected
+  your PC" on first run — choose **More info → Run anyway**. Signing needs an
+  Authenticode certificate.
+- Printing ignores paper-size, collate, greyscale and reverse-order choices;
+  jobs use the driver's defaults for those. The macOS path passes them through
+  CUPS. Page range, copies, orientation and scale all work.
+- **HEIC** needs the free **HEIF Image Extensions** from the Microsoft Store.
+  Bundling a decoder was tried and reverted: Microsoft ships that codec only
+  through the Store with no redistributable, and every pure-Rust HEIC decoder
+  published today is AGPL-3.0, which a signed closed-source binary cannot
+  satisfy. Every other supported image format works with nothing extra.
+- Opening a second PDF while RyDF is running starts a second copy of the app
+  rather than a new tab.
+
 ## [0.9.0] — 2026-09-05
 
 ### Added
