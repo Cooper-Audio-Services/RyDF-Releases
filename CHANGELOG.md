@@ -10,6 +10,25 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.10.1] — 2026-09-07
+
+### Fixed
+- **Opening a PDF while RyDF is running now adds a tab instead of starting a
+  second copy of the app** (Windows). A file association there launches a whole
+  new process with the path in argv, where macOS messages the app that is
+  already open — so double-clicking a second drawing gave you two RyDFs. The
+  duplicate window was the visible half of the problem; the real one was that
+  both copies then shared `preferences.json` and the crash-recovery directory
+  with nothing arbitrating between them, so whichever wrote last won and the
+  other's state was silently gone. The second process now hands its arguments
+  to the first and exits, and the first raises its window and opens the file —
+  the same path a Finder double-click has always taken on macOS. Launching RyDF
+  from the Start menu while it is already running now raises the window you
+  have rather than opening another one. Selecting several PDFs and opening them
+  together works the same way: Windows starts one process per file, and each
+  hands its path over in turn, so they arrive as tabs in one window rather than
+  as separate copies of the app.
+
 ## [0.10.0] — 2026-09-07
 
 ### Added
@@ -62,7 +81,7 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
   published today is AGPL-3.0, which a signed closed-source binary cannot
   satisfy. Every other supported image format works with nothing extra.
 - Opening a second PDF while RyDF is running starts a second copy of the app
-  rather than a new tab.
+  rather than a new tab. *(Fixed in 0.10.1.)*
 
 ## [0.9.0] — 2026-09-05
 
