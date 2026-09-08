@@ -10,6 +10,25 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.10.2] — 2026-09-08
+
+### Changed
+- **Updating on Windows no longer walks you through an uninstall.** The
+  installer was being run with no arguments, so it showed its full wizard —
+  and because an older RyDF was already there, that wizard's job was to
+  uninstall the old version and reinstall the new one, for what should be a
+  routine update. It now runs the way Tauri's own updater runs it: passive, so
+  there is a progress bar and nothing to click; flagged as an upgrade, so your
+  settings and shortcuts are left alone; and set to relaunch, so RyDF reopens
+  itself on the new version instead of simply vanishing. macOS is unchanged —
+  a .dmg has no equivalent, so it still opens the disk image and quits.
+
+  Note that updating *to* this version still uses the old behaviour, because
+  the updater doing the work is the one already installed: this one update will
+  still open the installer's wizard and offer to remove the existing version.
+  That is expected — letting it run through installs 0.10.2 normally, and every
+  update after it is the quiet kind.
+
 ## [0.10.1] — 2026-09-07
 
 ### Fixed
@@ -72,9 +91,12 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 - The installer is **not code-signed**, so SmartScreen shows "Windows protected
   your PC" on first run — choose **More info → Run anyway**. Signing needs an
   Authenticode certificate.
-- Printing ignores paper-size, collate, greyscale and reverse-order choices;
-  jobs use the driver's defaults for those. The macOS path passes them through
-  CUPS. Page range, copies, orientation and scale all work.
+- Printing does not pass **paper size** to the driver (the sheet comes from its
+  own defaults, and the Paper size panel offers a standard set rather than your
+  printer's list), never offers **Two-sided**, and applies **Reverse order**
+  only when saving to PDF. **Greyscale** works in Raster mode but not Vector.
+  Page range, copies, collate, orientation and scale all work. The macOS path
+  passes everything through CUPS.
 - **HEIC** needs the free **HEIF Image Extensions** from the Microsoft Store.
   Bundling a decoder was tried and reverted: Microsoft ships that codec only
   through the Store with no redistributable, and every pure-Rust HEIC decoder
