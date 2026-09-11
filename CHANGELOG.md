@@ -10,6 +10,35 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.10.3] — 2026-09-11
+
+### Added
+- **Copy, paste and duplicate markups.** ⌘D duplicates whatever is selected;
+  ⌘C and ⌘V move markups between pages and between open documents. None of
+  this existed before — ⌘C only ever copied selected page *text*, and ⌘D and
+  ⌘V did nothing at all. Copies keep their geometry and styling but start as
+  fresh annotations under your name, rather than inheriting the original's
+  status and reply thread, and a group copied together keeps its internal
+  layout.
+- **The Markups panel supports multi-select.** ⌘/Ctrl-click adds or removes a
+  row, and Shift-click takes everything between the last row you clicked
+  *without* Shift and this one — so a run of dimensions can be duplicated or
+  deleted in one go. Before, every click replaced the selection, which meant
+  the panel was the one place several markups could not be picked. The range
+  follows the rows as displayed, so it never quietly includes something a
+  filter is hiding.
+- **Zoom now goes to 2000%**, up from 800%. Tiles are rendered at the matching
+  resolution rather than being stretched, so the extra range is real detail and
+  not a blur. Nothing renders a whole page at that scale — only the tiles you
+  can see — so the memory cost is the same at 2000% as at 100%.
+
+### Fixed
+- **Approaching a large sheet no longer queues a whole row of tiles for it.**
+  The viewer warmed an entire row of a not-yet-visible page: 81 tiles for an
+  ARCH-E sheet at 800%, and 203 at the new ceiling. It now warms only the
+  columns the viewport actually spans, which is 7 or 8 — so the tiles you are
+  looking at stop competing with a page you have not reached.
+
 ## [0.10.2] — 2026-09-08
 
 ### Changed
