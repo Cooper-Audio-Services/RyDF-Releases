@@ -10,6 +10,23 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.10.4] — 2026-09-11
+
+### Fixed
+- **Selecting several markups works the same way on the page as in the Markups
+  panel.** ⌘/Ctrl-click now adds or removes one markup on the page too, where
+  before it replaced the whole selection — so the gesture 0.10.3 taught in the
+  panel quietly destroyed your selection the moment you used it on a drawing.
+  Shift-click on the page still does the same thing, and ⌘/Ctrl held while
+  marqueeing now adds to the selection just as Shift does. The panel keeps its
+  Shift-range, which a sheet has no equivalent of since markups on it are not
+  in a line.
+- **A selection spanning several pages no longer draws resize handles on each
+  of them.** With one selected markup per page, every page drew a full set of
+  handles, each looking individually editable when dragging one moves only that
+  markup. Handles now appear only when exactly one markup is selected in the
+  whole document — the rule the comment popup already used.
+
 ## [0.10.3] — 2026-09-11
 
 ### Added
