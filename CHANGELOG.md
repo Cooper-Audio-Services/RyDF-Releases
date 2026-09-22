@@ -10,6 +10,36 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.10.5] — 2026-09-22
+
+### Added
+- **A locator box on the page thumbnail shows where you are looking.** Zoom
+  past fitting the whole sheet and a box appears on the current page's
+  thumbnail in the Pages panel, marking the part of the drawing on screen and
+  moving with you as you scroll. On a large sheet at high zoom — where the
+  view shows a few percent of the paper and every part of it looks much like
+  every other — it is the quickest way to tell where you are. At a zoom that
+  fits the page there is nothing to locate, so nothing is drawn.
+
+### Fixed
+- **Printing on Windows no longer distorts the page when RyDF and the printer
+  driver disagree about paper.** RyDF sized its output from the paper chosen
+  in the Print window, but nothing carries that choice to a Windows printer —
+  the driver prints on whatever it is set to. A job laid out for A3 was then
+  stretched onto the driver's Letter sheet, and everything came out squashed.
+  RyDF now asks the driver what it will actually feed and lays the page out
+  for that, so the print is correctly proportioned. The Paper size control is
+  disabled for a Windows printer and says the driver owns the sheet, because
+  it could never change the outcome; set the paper in the printer's own
+  Windows settings. Printing to PDF is unaffected — there RyDF makes the sheet
+  itself, and the control works as before.
+- **Reverse page order now works when printing to a Windows printer.** It
+  applied when saving to PDF, and macOS passed it to CUPS, but on Windows the
+  checkbox did nothing at all.
+- **The OCR button is disabled where text recognition is not available**,
+  rather than staying live and failing when you run it.
+- A markup with one reply no longer reports "1 replies".
+
 ## [0.10.4] — 2026-09-11
 
 ### Fixed
@@ -142,7 +172,10 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
   printer's list), never offers **Two-sided**, and applies **Reverse order**
   only when saving to PDF. **Greyscale** works in Raster mode but not Vector.
   Page range, copies, collate, orientation and scale all work. The macOS path
-  passes everything through CUPS.
+  passes everything through CUPS. *(Correction: collate does not work there.
+  Windows copies are made by printing the whole document again, so output is
+  always collated and unticking **Collate** has no effect — though the dialog
+  still shows the checkbox.)*
 - **HEIC** needs the free **HEIF Image Extensions** from the Microsoft Store.
   Bundling a decoder was tried and reverted: Microsoft ships that codec only
   through the Store with no redistributable, and every pure-Rust HEIC decoder
@@ -176,7 +209,9 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
   86KB, curves preserved as true Béziers. Markups become real SVG, and links
   become real `<a href>` — which no other export in RyDF preserves. There is a
   strict mode that refuses rather than falling back, for when you need a
-  guarantee of pure vector.
+  guarantee of pure vector. *(Correction: that strict mode exists only in the
+  engine. Nothing in the app passes it — the Export menu has one SVG entry,
+  which always falls back and reports what it did.)*
 - **Crop**, for PDF pages and pictures alike, through one implementation.
   Non-destructive: it moves a boundary rather than discarding anything, reset
   restores the page exactly, and undo covers it.
