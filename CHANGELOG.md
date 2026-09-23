@@ -10,6 +10,22 @@ the `## [x.y.z] — YYYY-MM-DD` heading format stable.
 
 ## [Unreleased]
 
+## [0.10.6] — 2026-09-22
+
+### Fixed
+- **Typing a space in a text annotation now types a space.** It vanished: the
+  viewer claims the space bar to arm drag-panning and was swallowing the key
+  even while you were typing into a text annotation. The same handler
+  claims **Home**, **End**, **Page Up** and **Page Down**, so those were taken
+  too — pressing End in a text annotation jumped to the last page of the
+  document instead of the end of the line.
+- **The locator box now marks every page the view touches, not just the top
+  one.** Reading across a page break — the foot of one sheet and the head of
+  the next, which is the ordinary case at reading zoom — marked only the upper
+  page, answering half the question. Both are marked now. A page wholly in
+  view is still left alone, which also keeps this to the two or three pages
+  actually cut by the window's edges however far out you zoom.
+
 ## [0.10.5] — 2026-09-22
 
 ### Added
